@@ -2,6 +2,8 @@
 
 Package errors provides simple error handling primitives.
 
+See [Fork compatibility](#fork-compatibility)
+
 `go get github.com/azaviyalov/errors`
 
 The traditional error handling idiom in Go is roughly akin to
@@ -46,6 +48,23 @@ default:
 - 1.20
 - 1.21
 - 1.22
+
+## Fork compatibility
+
+This is a fork of https://github.com/pkg/errors. The original library has been archived and is not supported.
+
+This library has the same features as the original one, but includes updated tests for
+
+- `go.mod` support instead of `$GOPATH`
+- Go 1.21 changes in function closure names
+
+To use this library instead of the original one, you should use the `replace` directive:
+
+```
+go mod edit -replace github.com/pkg/errors=github.com/azaviyalov/errors@v1.0.0
+
+```
+
 
 ## License
 
