@@ -41,6 +41,12 @@ default:
 
 [Read the package documentation for more information](https://godoc.org/github.com/azaviyalov/errors).
 
+## Supported Go versions
+
+- 1.20
+- 1.21
+- 1.22
+
 ## License
 
 BSD-2-Clause
