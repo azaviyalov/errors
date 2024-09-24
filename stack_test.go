@@ -1,5 +1,3 @@
-//go:build !go1.21
-
 package errors
 
 import (
@@ -47,7 +45,7 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%d",
-		"11",
+		"9",
 	}, {
 		0,
 		"%d",
@@ -77,12 +75,12 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%v",
-		"stack_test.go:11",
+		"stack_test.go:9",
 	}, {
 		initpc,
 		"%+v",
 		"github.com/azaviyalov/errors.init\n" +
-			"\t.+/stack_test.go:11",
+			"\t.+/stack_test.go:9",
 	}, {
 		0,
 		"%v",
@@ -122,24 +120,24 @@ func TestStackTrace(t *testing.T) {
 	}{{
 		New("ooh"), []string{
 			"github.com/azaviyalov/errors.TestStackTrace\n" +
-				"\t.+/stack_test.go:123",
+				"\t.+/stack_test.go:121",
 		},
 	}, {
 		Wrap(New("ooh"), "ahh"), []string{
 			"github.com/azaviyalov/errors.TestStackTrace\n" +
-				"\t.+/stack_test.go:128", // this is the stack of Wrap, not New
+				"\t.+/stack_test.go:126", // this is the stack of Wrap, not New
 		},
 	}, {
 		Cause(Wrap(New("ooh"), "ahh")), []string{
 			"github.com/azaviyalov/errors.TestStackTrace\n" +
-				"\t.+/stack_test.go:133", // this is the stack of New
+				"\t.+/stack_test.go:131", // this is the stack of New
 		},
 	}, {
 		func() error { return New("ooh") }(), []string{
 			`github.com/azaviyalov/errors.TestStackTrace.func1` +
-				"\n\t.+/stack_test.go:138", // this is the stack of New
+				"\n\t.+/stack_test.go:136", // this is the stack of New
 			"github.com/azaviyalov/errors.TestStackTrace\n" +
-				"\t.+/stack_test.go:138", // this is the stack of New's caller
+				"\t.+/stack_test.go:136", // this is the stack of New's caller
 		},
 	}, {
 		Cause(func() error {
@@ -147,12 +145,12 @@ func TestStackTrace(t *testing.T) {
 				return Errorf("hello %s", fmt.Sprintf("world: %s", "ooh"))
 			}()
 		}()), []string{
-			`github.com/azaviyalov/errors.TestStackTrace.func2.1` +
-				"\n\t.+/stack_test.go:147", // this is the stack of Errorf
+			`github.com/azaviyalov/errors.TestStackTrace.TestStackTrace.func2.func3` +
+				"\n\t.+/stack_test.go:145", // this is the stack of Errorf
 			`github.com/azaviyalov/errors.TestStackTrace.func2` +
-				"\n\t.+/stack_test.go:148", // this is the stack of Errorf's caller
+				"\n\t.+/stack_test.go:146", // this is the stack of Errorf's caller
 			"github.com/azaviyalov/errors.TestStackTrace\n" +
-				"\t.+/stack_test.go:149", // this is the stack of Errorf's caller's caller
+				"\t.+/stack_test.go:147", // this is the stack of Errorf's caller's caller
 		},
 	}}
 	for i, tt := range tests {
@@ -222,19 +220,19 @@ func TestStackTraceFormat(t *testing.T) {
 	}, {
 		stackTrace()[:2],
 		"%v",
-		`\[stack_test.go:176 stack_test.go:223\]`,
+		`\[stack_test.go:174 stack_test.go:221\]`,
 	}, {
 		stackTrace()[:2],
 		"%+v",
 		"\n" +
 			"github.com/azaviyalov/errors.stackTrace\n" +
-			"\t.+/stack_test.go:176\n" +
+			"\t.+/stack_test.go:174\n" +
 			"github.com/azaviyalov/errors.TestStackTraceFormat\n" +
-			"\t.+/stack_test.go:227",
+			"\t.+/stack_test.go:225",
 	}, {
 		stackTrace()[:2],
 		"%#v",
-		`\[\]errors.Frame{stack_test.go:176, stack_test.go:235}`,
+		`\[\]errors.Frame{stack_test.go:174, stack_test.go:233}`,
 	}}
 
 	for i, tt := range tests {
