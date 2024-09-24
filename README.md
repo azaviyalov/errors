@@ -61,7 +61,7 @@ This library has the same features as the original one, but includes updated tes
 To use this library instead of the original one, you should use the `replace` directive:
 
 ```
-go mod edit -replace github.com/pkg/errors=github.com/azaviyalov/errors@v1.0.0
+go mod edit -replace github.com/pkg/errors=github.com/azaviyalov/errors@v1.1.0
 
 ```
 
